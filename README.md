@@ -1,2 +1,2 @@
 # ynyt
-yellow New York taxi demand forecasting with spatio-temporal transformers
+yellow New York taxi demand multiple forecasting with spatio-temporal transformers
