@@ -1,0 +1,10 @@
+artifacts/transformers
+dashboard/__pycache__
+data/preprocessed
+data/raw
+data/results_day.csv
+data/results_month.csv
+notebooks
+sttre/__pycache__
+ynyt/__pycache__
+deploy.ipynb

@@ -1,0 +1,13 @@
+./prediction/config.env
+./config.env
+.ipynb_checkpoints
+.vscode
+./dashboard/__pycache__
+./data
+./models
+./ynyt/__pycache__
+./sttre/__pycache__
+./transformers
+./ynyt/__pycache__
+./config_backup.json
+./deploy.ipynb

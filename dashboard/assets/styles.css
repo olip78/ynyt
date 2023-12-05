@@ -1,0 +1,153 @@
+@font-face {
+    font-family: "Ubuntu";
+    src: local("Ubuntu"),
+    url("/ubuntu-cdnfonts/Ubuntu-B.ttf") format("truetype"),
+    url("/ubuntu-cdnfonts/Ubuntu-BI.ttf") format("truetype"),
+    url("/ubuntu-cdnfonts/Ubuntu-C.ttf") format("truetype"),
+    url("/ubuntu-cdnfonts/Ubuntu-L.ttf") format("truetype"),
+    url("/ubuntu-cdnfonts/Ubuntu-LI.ttf") format("truetype"),
+    url("/ubuntu-cdnfonts/Ubuntu-M.ttf") format("truetype"),
+    url("/ubuntu-cdnfonts/Ubuntu-MI.ttf") format("truetype"),
+    url("/ubuntu-cdnfonts/Ubuntu-R.ttf") format("truetype"),
+    url("/ubuntu-cdnfonts/Ubuntu-RI.ttf") format("truetype");
+}
+
+body{
+    background-color: #181818;
+    font-family: Ubuntu, sans-serif;
+}
+.heading {
+    color: #FFFCFC;
+    background-color: #2B5D79;
+    padding: 1rem 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2em;
+    box-shadow: 0 5px 6px -3px rgba(0, 0, 0, .2), 0 9px 12px 1px rgba(0, 0, 0, .14), 0 3px 16px 2px rgba(0, 0, 0, .12);
+}
+
+.description {
+    color: #FFFCFC;
+    background-color: #424542;
+    padding: 1em;
+    margin: 0em auto 2em;
+    max-width: 1024px;
+    width: 100%;
+    box-shadow: 0 5px 6px -3px rgba(0, 0, 0, .2), 0 9px 12px 1px rgba(0, 0, 0, .14), 0 3px 16px 2px rgba(0, 0, 0, .12);
+}
+
+.dash-tab {
+    background-color: #181818;
+}
+
+.dash-tab-label {
+    color: #FFFCFC;
+    font-family: Ubuntu, sans-serif;
+    font-size: 0.75em !important;
+}
+
+.dash-tab-active {
+}
+
+a {
+    color: #FFFCFC;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #FFFCFC;
+    text-decoration:none;
+    cursor:pointer;
+}
+.nav-link {
+    color: #FFFCFC;
+    text-decoration: none;
+}
+.nav-link:hover {
+    color: #FFFCFC;
+}
+
+.container {
+    max-width: unset !important;
+    margin: unset !important;
+    padding: unset !important;
+}
+
+.nav-tabs,
+#tab-content {
+    margin: auto;
+    max-width: 1024px;
+    width: 100%;
+}
+
+#h-slider,
+#crossfilter-h-slider {
+    margin: 1.5em 0;
+}
+
+#map_slider_text,
+#map_r2_slider_text {
+    color: #FFFCFC;
+    text-align: left;
+    width: 100%;
+}
+
+.rc-slider-mark-text {
+    color: #FFFCFC;
+}
+.rc-slider-mark-text-active {
+    font-weight: bold;
+}
+
+.rc-slider-handle {
+    border: solid 2px #FFFCFC;
+    background-color: #6EACCF;
+}
+
+.rc-slider-handle-click-focused:focus {
+    border: solid 2px #FFFCFC;
+    background-color: #6EACCF;
+}
+
+.rc-slider-dot-active {
+    border-color: #6EACCF;
+}
+
+.rc-slider-track {
+    background-color: #6EACCF;
+}
+
+.rc-slider-dot {
+    width: 12px;
+    height: 12px;
+    margin-bottom: -2px;
+}
+
+text {
+    font-family: Ubuntu, sans-serif !important;
+}
+
+.page-footer {
+    color: #6EACCF;
+    padding: 0.75em;
+    font-size: 0.75em;
+    width: 100%;
+    background-color: #424542;
+    margin-top: 2em;
+    position: absolute;
+    bottom: 0px;
+    box-shadow: 0 -1px 8px rgb(0 0 0 / .20), 0 -3px 4px rgb(0 0 0 / .14), 0 -3px 3px -2px rgb(0 0 0 / .12);
+}
+
+.w-30 {
+    width: 30%;
+}
+
+
+.one-tab-case,
+#tab-content {
+    margin: auto;
+    max-width: 1024px;
+    width: 100%;
+}

@@ -1,0 +1,40 @@
+{
+    "zero_hour": ["2019-01-01 00:00:00", "%Y-%m-%d %H:%M:%S"],
+    "base_features": {
+        "rolling":[
+            [
+                "y",
+                {
+                    "sum": [
+                        12, 6
+                    ],
+                    "ar_d": 5,
+                    "ar_D": 14
+                }
+            ]
+        ],
+        "target": ["target", "y", 6],
+        "time_based": {"features_on": {"weekday": true, "weekday_plus": false, "weekhours": true}}
+        },
+    "add_features": ["distance", "duration", "passengers", "cost", "tips", "vendor", "dol"], 
+    "harmonics": {
+        "K": {
+            "week": 6,
+            "year": 0,
+            "day": 6
+        }
+    },
+    "normalizer": {"path": "../artifacts", 
+                   "to_normalize": ["h", "distance", "duration", "passengers", "cost", "tips", "vendor", "velocity"],
+                   "target": "y"},
+    "combinations": [
+        [["b", "h"], "zone_id"],
+        ["ar_d", "zone_id"],
+        ["ar_d", "hours"],
+        ["sum", "zone_id"],
+        ["harmonics", "linear"],
+        [["distance", "duration", "passengers", "cost", "tips", "vendor", "dol"], "zone_id"],
+        [["distance", "duration", "cost", "tips", "vendor", "dol"], "hours"]
+    ],
+    "D_combinations": ["hours", "zone_id"]
+}

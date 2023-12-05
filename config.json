@@ -1,0 +1,10 @@
+{
+    "output": {
+        "single": {
+            "zone_id": 87
+        },
+        "description": "Illustrative dashboard for six-hour forecasting of demand on yellow taxi in the most lively New York areas",
+        "UTC correction": 1,
+        "n_tabs": 2
+    }
+}
