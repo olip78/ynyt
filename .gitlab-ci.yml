@@ -1,0 +1,69 @@
+image: docker:latest
+stages:      
+  - build
+  - deploy
+
+services:
+  - docker:dind
+
+variables: 
+    MANAGER_HOST: "84.201.156.181"
+
+build-job:
+  stage: build
+  rules:
+    - if: 'CI_COMMIT_BRANCH == PROD || CI_COMMIT_BRANCH == TEST'
+  before_script: 
+    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh-add <(echo "$SSH_PRIV_KEY")
+ 
+    - ssh root@${MANAGER_HOST} "docker stop registry"
+    - ssh root@${MANAGER_HOST} "docker rm registry"
+    - ssh root@${MANAGER_HOST} "docker run -d -p 4000:5000 --restart=always --name registry registry:2"
+
+  script:
+    - echo "build job start!"
+    
+    - echo "predict-img"
+    - scp -r ynyt root@${MANAGER_HOST}:/root/ynyt
+    - scp -r prediction root@${MANAGER_HOST}:/root/prediction
+    - ssh root@${MANAGER_HOST} "docker build -t ynyt_prediction -f ./prediction/Dockerfile ."
+    - ssh root@${MANAGER_HOST} "docker tag ynyt_prediction:latest ${MANAGER_HOST}:4000/ynyt_prediction:latest"
+    - ssh root@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_prediction:latest"
+    - echo "predict-img complete!"
+
+    - echo "build job complete!"
+
+first-predictions-update:     
+  stage: deploy
+
+  before_script: 
+    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh-add <(echo "$SSH_PRIV_KEY")
+
+  script:
+    - echo "Deploying application..."
+    - ssh root@${MANAGER_HOST} "docker run --name prediction --env-file $(pwd)/prediction/config.env --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
+    - echo "Application successfully deployed!"
+
+predictions-deploy:     
+  stage: deploy
+
+  before_script: 
+    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh-add <(echo "$SSH_PRIV_KEY")
+  only:
+    - schedules
+  script:
+    - echo "Deploying application..."
+    - ssh root@${MANAGER_HOST} "docker service create --replicas 1 --name prediction --env-file $PREDICTION_CONFIG --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
+    - echo "Prediction app successfully deployed!"
