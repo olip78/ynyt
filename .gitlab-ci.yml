@@ -7,12 +7,11 @@ services:
   - docker:dind
 
 variables: 
-    MANAGER_HOST: "84.201.156.181"
+  MANAGER_HOST: "84.201.156.181"
 
 build-job:
   stage: build
-  rules:
-    - if: 'CI_COMMIT_BRANCH == PROD || CI_COMMIT_BRANCH == TEST'
+
   before_script: 
     - 'which ssh-agent || ( apt-get install -qq openssh-client )'
     - eval $(ssh-agent -s)
