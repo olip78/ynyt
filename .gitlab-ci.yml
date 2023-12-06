@@ -18,7 +18,8 @@ build-job:
     - mkdir -p ~/.ssh
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
-
+    
+    - ssh olipandrei@${MANAGER_HOST} "touch kyky.txt"
     - ssh olipandrei@${MANAGER_HOST} "docker stop registry"
     - ssh olipandrei@${MANAGER_HOST} "docker rm registry"
     - ssh olipandrei@${MANAGER_HOST} "docker run -d -p 4000:5000 --restart=always --name registry registry:2"
