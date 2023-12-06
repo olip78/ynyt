@@ -48,7 +48,7 @@ first-predictions-update:
 
   script:
     - echo "Deploying application..."
-    - ssh root@${MANAGER_HOST} "docker run --name prediction --env-file $(pwd)/prediction/config.env --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
+    - ssh root@${MANAGER_HOST} "docker run --name prediction --env-file $PREDICTION_CONFIG --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
     - echo "Application successfully deployed!"
 
 predictions-deploy:     
