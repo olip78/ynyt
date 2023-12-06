@@ -13,12 +13,12 @@ build-job:
   stage: build
 
   before_script: 
-    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
-    - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
-    - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh-add <(echo "$SSH_PRIV_KEY")
- 
+    - chmod 700 ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600
+
     - ssh root@${MANAGER_HOST} "docker stop registry"
     - ssh root@${MANAGER_HOST} "docker rm registry"
     - ssh root@${MANAGER_HOST} "docker run -d -p 4000:5000 --restart=always --name registry registry:2"
@@ -44,7 +44,7 @@ first-predictions-update:
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh-add <(echo "$SSH_PRIV_KEY")
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
 
   script:
     - echo "Deploying application..."
