@@ -17,7 +17,7 @@ build-job:
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh-add <(echo "$SSH_PRIV_KEY")
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
 
     - ssh olipandrei@${MANAGER_HOST} "docker stop registry"
     - ssh olipandrei@${MANAGER_HOST} "docker rm registry"
@@ -59,7 +59,7 @@ predictions-deploy:
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh-add <(echo "$SSH_PRIV_KEY")
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
   only:
     - schedules
   script:
