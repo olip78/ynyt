@@ -10,7 +10,6 @@ WORKDIR /usr/src/app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./ynyt/ /usr/src/app/ynyt
-COPY ./artifacts/ /usr/src/app/artifacts
 COPY ./prediction/ /usr/src/app/prediction
 
 WORKDIR ./prediction
