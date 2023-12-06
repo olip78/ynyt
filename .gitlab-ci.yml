@@ -30,7 +30,7 @@ build-job:
     - echo "predict-img"
     - scp -r ynyt olipandrei@${MANAGER_HOST}:/home/olipandrei/ynyt
     - scp -r prediction olipandrei@${MANAGER_HOST}:/home/olipandrei/prediction
-    - ssh olipandrei${MANAGER_HOST} "docker build -t ynyt_prediction -f ./prediction/Dockerfile ."
+    - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_prediction -f ./prediction/Dockerfile ."
     - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_prediction:latest ${MANAGER_HOST}:4000/ynyt_prediction:latest"
     - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_prediction:latest"
     - echo "predict-img complete!"
