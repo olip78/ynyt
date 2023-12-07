@@ -8,34 +8,57 @@ services:
 
 variables: 
   MANAGER_HOST: "84.201.156.181"
+  WORKER_HOST: "158.160.43.128"
+  FILE_VAR: $PREDICTION_CONFIG
 
 build-job:
   stage: build
 
+  rules:
+    - changes:
+        - "**/*"
   before_script: 
     - 'which ssh-agent || ( apt-get install -qq openssh-client )'
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
-    
-    - ssh olipandrei@${MANAGER_HOST} "touch kyky.txt"
+
     - ssh olipandrei@${MANAGER_HOST} "docker stop registry"
     - ssh olipandrei@${MANAGER_HOST} "docker rm registry"
+    - ssh olipandrei@${MANAGER_HOST} "docker system prune -a --volumes"
     - ssh olipandrei@${MANAGER_HOST} "docker run -d -p 4000:5000 --restart=always --name registry registry:2"
 
   script:
     - echo "build job start!"
-    
-    - echo "predict-img"
-    - scp -r ynyt olipandrei@${MANAGER_HOST}:/home/olipandrei/ynyt
-    - scp -r prediction olipandrei@${MANAGER_HOST}:/home/olipandrei/prediction
+
+    - echo "scp start" 
+    - scp -prq ynyt/. olipandrei@${MANAGER_HOST}:/home/olipandrei/ynyt
+    - scp -prq prediction/. olipandrei@${MANAGER_HOST}:/home/olipandrei/prediction
+    - scp -prq dashboard/. olipandrei@${MANAGER_HOST}:/home/olipandrei/dashboard
+    - scp -prq data/. olipandrei@${MANAGER_HOST}:/home/olipandrei/data
+    - scp -r config.json  olipandrei@${MANAGER_HOST}:/home/olipandrei/config.json
+    - scp -prq updater/. olipandrei@${MANAGER_HOST}:/home/olipandrei/updater
+
+    - echo "predict-img start"
     - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_prediction -f ./prediction/Dockerfile ."
     - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_prediction:latest ${MANAGER_HOST}:4000/ynyt_prediction:latest"
     - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_prediction:latest"
-    - echo "predict-img complete!"
+
+    - echo "dashboard-img start"
+    - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_app -f ./dashboard/Dockerfile ."
+    - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_app:latest ${MANAGER_HOST}:4000/ynyt_app:latest"
+    - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_app:latest"
+
+    - echo "updater-img start"
+    - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_updater -f ./updater/Dockerfile ."
+    - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_updater:latest ${MANAGER_HOST}:4000/ynyt_updater:latest"
+    - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_updater:latest"
 
     - echo "build job complete!"
+  after_script:
+    - ssh -T olipandrei@${MANAGER_HOST} "rm -r /home/olipandrei/ynyt"
+    - ssh -T olipandrei@${MANAGER_HOST} "rm -r /home/olipandrei/prediction"
 
 first-predictions-update:     
   stage: deploy
@@ -47,10 +70,16 @@ first-predictions-update:
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
 
+    - cat $FILE_VAR >> /builds/olip78/ynyt.tmp/.env
+    - scp -r /builds/olip78/ynyt.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
+  when: manual
   script:
     - echo "Deploying application..."
-    - ssh olipandrei@${MANAGER_HOST} "docker run --name prediction --env-file $PREDICTION_CONFIG --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
+    - ssh olipandrei@${MANAGER_HOST} "docker run --name prediction --env-file .env --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
     - echo "Application successfully deployed!"
+
+  after_script:
+    - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/.env"
 
 predictions-deploy:     
   stage: deploy
@@ -61,9 +90,15 @@ predictions-deploy:
     - mkdir -p ~/.ssh
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
+
+    - cat $FILE_VAR >> /builds/olip78/ynyt.tmp/.env
+    - scp -r /builds/olip78/ynyt.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
   only:
     - schedules
   script:
     - echo "Deploying application..."
-    - ssh olipandrei@${MANAGER_HOST} "docker service create --replicas 1 --name prediction --env-file $PREDICTION_CONFIG --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
+    - ssh olipandrei@${MANAGER_HOST} "docker service create --replicas 1 --name prediction --env-file .env --rm -d $MANAGER_HOST:4000/ynyt_prediction"
     - echo "Prediction app successfully deployed!"
+  after_script:
+    - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/.env"
+
