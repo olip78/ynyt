@@ -22,9 +22,6 @@ COPY ./dashboard/ /usr/src/app/
 COPY ./data/taxi_zones/ /usr/src/app/data/taxi_zones
 COPY ./config.json /usr/src/app/config.json
 
-COPY ./data/results_day.csv /usr/src/app/data/results/results_day.csv
-COPY ./data/results_month.csv /usr/src/app/data/results/results_month.csv
-
 EXPOSE 8080
 
 HEALTHCHECK --interval=15s --retries=2 \
