@@ -110,4 +110,3 @@ predictions-update:
   after_script:
     - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/.env"
     - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/prediction_stack.yml"
-
