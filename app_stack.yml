@@ -2,6 +2,8 @@ version: "3.9"
 
 services:
   updater:
+    environment:
+      MANAGER_HOST: ${MANAGER_HOST}
     image: "${MANAGER_HOST}:4000/ynyt_updater"
     container_name: ynyt_updater
     logging:
@@ -14,6 +16,8 @@ services:
       - "8081:8081"
 
   dashboard:
+    environment:
+      MANAGER_HOST: ${MANAGER_HOST}
     image: "${MANAGER_HOST}:4000/ynyt_app"
     container_name: dashboard
     logging:
