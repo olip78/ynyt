@@ -75,9 +75,10 @@ app_dashboard:
     - mkdir -p ~/.ssh
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
-
+    
     - scp -r app_stack.yml  olipandrei@${MANAGER_HOST}:/home/olipandrei/app_stack.yml
-    - ssh olipandrei@${MANAGER_HOST} "export MANAGER_HOST=${MANAGER_HOST}"
+    - echo "MANAGER_HOST=${MANAGER_HOST}" >> .env
+    - scp -r .env  olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
 
   script:
     - echo "Deploying app_dashboard..."
@@ -88,6 +89,7 @@ app_dashboard:
   
   after_script:
     - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/app_stack.yml"
+    - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/.env"
 
 predictions-update:
   stage: deploy
