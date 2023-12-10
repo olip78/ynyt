@@ -8,7 +8,6 @@ services:
 
 variables: 
   MANAGER_HOST: "84.201.156.181"
-  WORKER_HOST: "158.160.43.128"
   FILE_VAR: $PREDICTION_CONFIG
 
 build-job:
@@ -40,6 +39,8 @@ build-job:
     - scp -prq data/. olipandrei@${MANAGER_HOST}:/home/olipandrei/data
     - scp -r config.json  olipandrei@${MANAGER_HOST}:/home/olipandrei/config.json
     - scp -prq updater/. olipandrei@${MANAGER_HOST}:/home/olipandrei/updater
+    - scp -r app_stack.yml  olipandrei@${MANAGER_HOST}:/home/olipandrei/app_stack.yml
+    - scp -r prediction_stack.yml olipandrei@${MANAGER_HOST}:/home/olipandrei/prediction_stack.yml
 
     - echo "dashboard-img start"
     - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_app -f ./dashboard/Dockerfile ."
@@ -56,12 +57,37 @@ build-job:
     - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_prediction:latest ${MANAGER_HOST}:4000/ynyt_prediction:latest"
     - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_prediction:latest"
 
+    - echo "predict-cron-img start"
+    - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_prediction_cron -f ./prediction/Dockerfile.cron ."
+    - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_prediction_cron:latest ${MANAGER_HOST}:4000/ynyt_prediction_cron:latest"
+    - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_prediction_cron:latest"
+
     - echo "build job complete!"
   after_script:
     - ssh -T olipandrei@${MANAGER_HOST} "rm -r /home/olipandrei/ynyt"
     - ssh -T olipandrei@${MANAGER_HOST} "rm -r /home/olipandrei/prediction"
 
-first-predictions-update:     
+app_dashboard:     
+  stage: deploy
+
+  before_script: 
+    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+
+  script:
+    - echo "Deploying app_dashboard..."
+    - ssh olipandrei@${MANAGER_HOST} "docker stack deploy -c ./app_stack.yml app_ynyt"
+    - ssh olipandrei@${MANAGER_HOST} "docker service update --replicas 4 app_ynyt"
+
+    - echo "Prediction app_dashboard successfully deployed!"
+  
+  after_script:
+    - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/app_stack.yml"
+
+predictions-update:
   stage: deploy
 
   before_script: 
@@ -73,33 +99,15 @@ first-predictions-update:
 
     - cat $FILE_VAR >> /builds/olip78/ynyt.tmp/.env
     - scp -r /builds/olip78/ynyt.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
-  when: manual
+
   script:
-    - echo "Deploying application..."
+    - echo "Deploying predict ..."
     - ssh olipandrei@${MANAGER_HOST} "docker run --name prediction --env-file .env --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
-    - echo "Application successfully deployed!"
-
-  after_script:
-    - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/.env"
-
-predictions-deploy:     
-  stage: deploy
-
-  before_script: 
-    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
-    - eval $(ssh-agent -s)
-    - mkdir -p ~/.ssh
-    - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh-add <(echo "$SSH_PRIVATE_KEY")
-
-    - cat $FILE_VAR >> /builds/olip78/ynyt.tmp/.env
-    - scp -r /builds/olip78/ynyt.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
-  only:
-    - schedules
-  script:
-    - echo "Deploying application..."
-    - ssh olipandrei@${MANAGER_HOST} "docker service create --replicas 1 --name prediction --env-file .env --rm -d $MANAGER_HOST:4000/ynyt_prediction"
+    - ssh olipandrei@${MANAGER_HOST} "docker stack deploy -c ./prediction_stack.yml ynyt_prediction_cron"
+    - ssh olipandrei@${MANAGER_HOST} "docker service update --replicas 1 predictions_ynyt"
     - echo "Prediction app successfully deployed!"
+
   after_script:
     - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/.env"
+    - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/prediction_stack.yml"
 
