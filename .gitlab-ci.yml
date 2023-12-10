@@ -42,7 +42,12 @@ build-job:
 
 
     - echo "dashboard-img start"
-    - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_app -f ./dashboard/Dockerfile ."
+
+    - docker build -t ynyt_app -f ./dashboard/Dockerfile .
+    - docker tag ynyt_app:latest ${MANAGER_HOST}:4000/ynyt_app:latest
+    - docker push ${MANAGER_HOST}:4000/ynyt_app:latest
+
+  #  - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_app -f ./dashboard/Dockerfile ."
   #  - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_app:latest ${MANAGER_HOST}:4000/ynyt_app:latest"
   #  - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_app:latest"
 
