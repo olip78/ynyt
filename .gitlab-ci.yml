@@ -23,8 +23,8 @@ build-job:
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
 
-    #- ssh olipandrei@${MANAGER_HOST} "docker stop registry"
-    #- ssh olipandrei@${MANAGER_HOST} "docker rm registry"
+    - ssh olipandrei@${MANAGER_HOST} "docker stop registry"
+    - ssh olipandrei@${MANAGER_HOST} "docker rm registry"
     #- ssh olipandrei@${MANAGER_HOST} "docker system prune -a --volumes"
     - ssh olipandrei@${MANAGER_HOST} "docker run -d -p 4000:5000 --restart=always --name registry registry:2"
 
@@ -39,8 +39,7 @@ build-job:
     - scp -prq data/. olipandrei@${MANAGER_HOST}:/home/olipandrei/data
     - scp -r config.json  olipandrei@${MANAGER_HOST}:/home/olipandrei/config.json
     - scp -prq updater/. olipandrei@${MANAGER_HOST}:/home/olipandrei/updater
-    - scp -r app_stack.yml  olipandrei@${MANAGER_HOST}:/home/olipandrei/app_stack.yml
-    - scp -r prediction_stack.yml olipandrei@${MANAGER_HOST}:/home/olipandrei/prediction_stack.yml
+
 
     - echo "dashboard-img start"
     - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_app -f ./dashboard/Dockerfile ."
@@ -77,6 +76,8 @@ app_dashboard:
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
 
+    - scp -r app_stack.yml  olipandrei@${MANAGER_HOST}:/home/olipandrei/app_stack.yml
+
   script:
     - echo "Deploying app_dashboard..."
     - ssh olipandrei@${MANAGER_HOST} "docker stack deploy -c ./app_stack.yml app_ynyt"
@@ -97,6 +98,7 @@ predictions-update:
     - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
 
+    - scp -r prediction_stack.yml olipandrei@${MANAGER_HOST}:/home/olipandrei/prediction_stack.yml
     - cat $FILE_VAR >> /builds/olip78/ynyt.tmp/.env
     - scp -r /builds/olip78/ynyt.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
 
