@@ -25,7 +25,7 @@ async def update_data(period: str, request: Request) -> dict:
     try:
         data = await request.json()
         df = pd.DataFrame(data)
-        df.to_csv(os.path.join(PATH_DATA, 'results', f'results_{period}.csv'), index=False)
+        df.to_csv(os.path.join(PATH_DATA, f'results_{period}.csv'), index=False)
         return {"status": f'{period} predictions is updated'}
     except Exception as e:
         return HTTPException(status_code=500, detail=str(e))
@@ -36,7 +36,7 @@ async def update_data(period: str, request: Request) -> dict:
 async def first_update(request: Request) -> dict:
     """returns 0 if results_month.csv is there, 1 otherwise
     """
-    file_path = os.path.join(PATH_DATA, 'results', 'results_month.csv')
+    file_path = os.path.join(PATH_DATA, 'results_month.csv')
 
     if os.path.exists(file_path):
         result = 0

@@ -4,5 +4,7 @@ pandas==1.5.2
 Requests==2.31.0
 python_dateutil==2.8.2
 scikit_learn==1.0.2
+holidays==0.17.2
 scipy==1.9.3
 s3fs==0.4.2
+fastparquet==2023.10.1

@@ -24,10 +24,10 @@ def init_predictions():
     month = True
     while day or month:
         time.sleep(3)
-        if os.path.isfile(os.path.join(PATH_DATA, 'results', f'results_month.csv')):
+        if os.path.isfile(os.path.join(PATH_DATA, f'results_month.csv')):
             month = False
             print('results_month.csv is there')
-        if os.path.isfile(os.path.join(PATH_DATA, 'results', f'results_day.csv')):
+        if os.path.isfile(os.path.join(PATH_DATA, f'results_day.csv')):
             day = False
             print('results_day.csv is there')
     print('predictions are initialized')
@@ -143,7 +143,7 @@ def exchange_update():
     """
     updater_exchange = json.loads(os.environ['UPDATER_EXCHANGE'])
     for period in ['day', 'month']:
-        path = os.path.join(os.environ['PATH_DATA'], 'results', f'results_{period}.csv')
+        path = os.path.join(os.environ['PATH_DATA'], f'results_{period}.csv')
         ctime = os.path.getctime(path)
         if updater_exchange[f'{period}_ctime'] != ctime:
             updater_exchange['{period}'] = False

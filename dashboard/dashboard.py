@@ -25,8 +25,8 @@ os.environ['DASH_DEBUG_MODE'] = 'False'
 PATH_DATA = os.environ['PATH_DATA']
 PATH_CONFIG = os.environ['PATH_CONFIG']
 
-path_day = os.path.join(PATH_DATA, 'results', 'results_day.csv')
-path_month = os.path.join(PATH_DATA, 'results', 'results_month.csv')
+path_day = os.path.join(PATH_DATA, 'results_day.csv')
+path_month = os.path.join(PATH_DATA, 'results_month.csv')
 
 
 # predictions initialization
@@ -73,7 +73,7 @@ id_start=163
 update_data()
 
 # ----- ny zones geo data -----  
-dbf = geopandas.GeoDataFrame.from_file(os.path.join(PATH_DATA, 'taxi_zones', 'taxi_zones.dbf'))
+dbf = geopandas.GeoDataFrame.from_file(os.path.join('data', 'taxi_zones', 'taxi_zones.dbf'))
 dbf = dbf.to_crs(4326)
 
 

@@ -1,7 +1,6 @@
 from typing import Dict, Tuple, List
 import os
 import sys
-import json
 import requests
 import datetime
 import mlflow
@@ -16,6 +15,9 @@ module_path = os.path.abspath(os.path.join('..'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
+os.chdir('/usr/src/app/prediction')
+
+sys.path.append("/usr/src/app")
 from ynyt.features import BaseFeatures, FeatureCombiner
 
 
@@ -74,6 +76,7 @@ def update_results(results: pd.DataFrame, period, api_ip: str = api_ip, api_port
     """
     results_json = results.to_json(orient='records')
     api_url = f'http://{api_ip}:{api_port}/update/{period}'
+    print(api_url)
     response = requests.post(api_url, results_json)
     if response.status_code != 200:
         print(f"Error: {response.status_code}")
@@ -103,16 +106,15 @@ period = [h_start - datetime.timedelta(days=14), h_start + datetime.timedelta(da
 results_day = update_predictions(period, 'inference', model_paths)
 update_results(results_day, 'day')
 
-
 # monthly update
 api_url = f'http://{api_ip}:{api_port}/month/'
 response = requests.get(api_url)
 if response.status_code != 200:
    print(f"Error: {response.status_code}")
 
-force = bool(response.json()['result'])
+forced = bool(response.json()['result'])
 
-if datetime.datetime.now().day == 1 or force:
+if datetime.datetime.now().day == 1 or forced:
     period = [datetime.datetime(year, month, 1, 1, 0) - datetime.timedelta(days=14), 
               datetime.datetime(year, month, 31, 23, 0)]
     results_month = update_predictions(period, 'validation', model_paths)

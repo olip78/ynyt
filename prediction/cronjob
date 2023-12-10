@@ -1,0 +1,1 @@
+0 * * * * . /usr/src/app/prediction/cron_env.sh && /usr/local/bin/python /usr/src/app/prediction/predict.py >> /tmp/cron.log 2>&1

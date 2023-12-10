@@ -1,6 +1,11 @@
 FROM python:3.9
 
 ENV PYTHONUNBUFFERED 1
+ENV PYTHONPATH /usr/src/app
+
+RUN apt-get update && \
+    apt-get install -y cron && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /usr/src/app/
 
@@ -14,4 +19,7 @@ COPY ./artifacts/ /usr/src/app/artifacts
 
 WORKDIR ./prediction
 
-CMD ["python", "predict.py"]
+RUN chmod 0644 cronjob
+RUN crontab cronjob
+
+CMD ["cron", "-f", "-l", "2"]

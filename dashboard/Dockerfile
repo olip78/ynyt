@@ -8,7 +8,6 @@ RUN apt-get update && apt-get install -y  g++ llvm lcov && apt-get install --yes
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
 ENV C_INCLUDE_PATH=/usr/include/gdal
 
-ENV PATH_DATA=./data/
 ENV PATH_CONFIG=./
 
 RUN mkdir -p /usr/src/app/
@@ -21,6 +20,9 @@ RUN pip install --no-cache-dir -r requirements.txt && pip install --upgrade dash
 COPY ./dashboard/ /usr/src/app/
 COPY ./data/taxi_zones/ /usr/src/app/data/taxi_zones
 COPY ./config.json /usr/src/app/config.json
+
+ENV PATH_DATA=../results/
+RUN mkdir -p /usr/src/results/
 
 EXPOSE 8080
 

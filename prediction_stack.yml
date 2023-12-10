@@ -1,0 +1,8 @@
+version: "3.9"
+
+services:
+  prediction_cron:
+    image: ${MANAGER_HOST}:4000/ynyt_prediction_cron:latest
+    container_name: prediction_cron
+    env_file:
+      - ./.env

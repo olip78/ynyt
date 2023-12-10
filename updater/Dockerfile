@@ -1,7 +1,6 @@
 FROM python:3.10
     
 ENV PYTHONUNBUFFERED 1
-ENV PATH_DATA=./data/
 
 RUN mkdir -p /usr/src/app/
 WORKDIR /usr/src/app/
@@ -10,6 +9,9 @@ COPY ./updater/requirements.txt /usr/src/app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ./updater/ /usr/src/app/
+
+ENV PATH_DATA=../results/
+RUN mkdir -p /usr/src/results/
 
 EXPOSE 8081
 
