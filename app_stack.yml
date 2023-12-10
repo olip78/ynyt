@@ -4,7 +4,7 @@ services:
   updater:
     environment:
       MANAGER_HOST: ${MANAGER_HOST}
-    image: "${MANAGER_HOST}:4000/ynyt_updater"
+    image: "${MANAGER_HOST}:4000/ynyt_updater:latest"
     container_name: ynyt_updater
     logging:
       driver: journald
@@ -18,7 +18,7 @@ services:
   dashboard:
     environment:
       MANAGER_HOST: ${MANAGER_HOST}
-    image: "${MANAGER_HOST}:4000/ynyt_app"
+    image: "${MANAGER_HOST}:4000/ynyt_app:latest"
     container_name: dashboard
     logging:
       driver: journald
