@@ -15,8 +15,7 @@ services:
 
   dashboard:
     image: "${MANAGER_HOST}:4000/ynyt_app"
-    mycontainer:
-    image: myimage
+    container_name: dashboard
     logging:
       driver: journald
       options:
