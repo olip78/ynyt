@@ -77,6 +77,8 @@ ynyt:
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
     
     - scp -r app_stack.yml  olipandrei@${MANAGER_HOST}:/home/olipandrei/app_stack.yml
+    - cat $FILE_VAR >> /builds/olip78/ynyt.gi.tmp/.env
+    - scp -r /builds/olip78/ynyt.gi.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
 
   script:
     - echo "Deploying app_dashboard..."
