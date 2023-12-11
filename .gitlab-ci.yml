@@ -32,13 +32,13 @@ build-job:
     - echo "build job start!"
 
     - echo "scp start" 
-   # - scp -prq ynyt/. olipandrei@${MANAGER_HOST}:/home/olipandrei/ynyt
-   # - scp -prq prediction/. olipandrei@${MANAGER_HOST}:/home/olipandrei/prediction
-   # - scp -prq artifacts/. olipandrei@${MANAGER_HOST}:/home/olipandrei/artifacts
-   # - scp -prq dashboard/. olipandrei@${MANAGER_HOST}:/home/olipandrei/dashboard
-   # - scp -prq data/. olipandrei@${MANAGER_HOST}:/home/olipandrei/data
-   # - scp -r config.json  olipandrei@${MANAGER_HOST}:/home/olipandrei/config.json
-   # - scp -prq updater/. olipandrei@${MANAGER_HOST}:/home/olipandrei/updater
+    - scp -prq ynyt/. olipandrei@${MANAGER_HOST}:/home/olipandrei/ynyt
+    - scp -prq prediction/. olipandrei@${MANAGER_HOST}:/home/olipandrei/prediction
+    - scp -prq artifacts/. olipandrei@${MANAGER_HOST}:/home/olipandrei/artifacts
+    - scp -prq dashboard/. olipandrei@${MANAGER_HOST}:/home/olipandrei/dashboard
+    - scp -prq data/. olipandrei@${MANAGER_HOST}:/home/olipandrei/data
+    - scp -r config.json  olipandrei@${MANAGER_HOST}:/home/olipandrei/config.json
+    - scp -prq updater/. olipandrei@${MANAGER_HOST}:/home/olipandrei/updater
 
 
     - echo "dashboard-img start"
