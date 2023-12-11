@@ -83,7 +83,8 @@ app_dashboard:
 
   script:
     - echo "Deploying app_dashboard..."
-    - ssh olipandrei@${MANAGER_HOST} "docker stack deploy --env-file /home/olipandrei/.env -c ./app_stack.yml app_ynyt"
+    - ssh olipandrei@${MANAGER_HOST} "pwd"
+    - ssh olipandrei@${MANAGER_HOST} "docker stack deploy -c ./app_stack.yml app_ynyt"
     - ssh olipandrei@${MANAGER_HOST} "docker service update --replicas 4 app_ynyt"
 
     - echo "Prediction app_dashboard successfully deployed!"
