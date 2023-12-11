@@ -3,7 +3,7 @@ version: "3.9"
 services:
   updater:
     image: "${MANAGER_HOST}:4000/ynyt_updater:latest"
-    container_name: ynyt_updater
+    container_name: updater
     logging:
       driver: journald
       options:
@@ -14,15 +14,12 @@ services:
       - "8081:8081"
 
   dashboard:
-    environment:
-      MANAGER_HOST: ${MANAGER_HOST}
     image: "${MANAGER_HOST}:4000/ynyt_app:latest"
     container_name: dashboard
     logging:
       driver: journald
       options:
         tag: dashboard
-    container_name: ynyt_app
     volumes:
       - app_data:/usr/src/results
     ports:
