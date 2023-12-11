@@ -7,7 +7,7 @@ services:
   - docker:dind
 
 variables: 
-  MANAGER_HOST: "84.201.156.181"
+  MANAGER_HOST: "158.160.113.119"
   FILE_VAR: $PREDICTION_CONFIG
 
 build-job:
