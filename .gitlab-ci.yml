@@ -95,4 +95,3 @@ ynyt:
     - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/app_stack.yml"
     - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/prediction_stack.yml"
     - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/prediction/.env"
-
