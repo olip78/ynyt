@@ -83,8 +83,8 @@ ynyt:
   script:
     - echo "Deploying app_dashboard..."
     - ssh olipandrei@${MANAGER_HOST} "MANAGER_HOST=${MANAGER_HOST} docker stack deploy -c ./app_stack.yml app_ynyt"
-    #- ssh olipandrei@${MANAGER_HOST} "docker service update --replicas 4 app_ynyt_dashboard"
-    #- ssh olipandrei@${MANAGER_HOST} "docker service update --replicas 2 app_ynyt_updater"
+    - ssh olipandrei@${MANAGER_HOST} "docker service update --replicas 1 app_ynyt_dashboard"
+    - ssh olipandrei@${MANAGER_HOST} "docker service update --replicas 1 app_ynyt_updater"
     #- ssh olipandrei@${MANAGER_HOST} "docker service update --replicas 1 app_ynyt_prediction_cron"
     
     # first start
