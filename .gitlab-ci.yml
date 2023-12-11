@@ -77,8 +77,9 @@ app_dashboard:
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
     
     - scp -r app_stack.yml  olipandrei@${MANAGER_HOST}:/home/olipandrei/app_stack.yml
-    - echo "MANAGER_HOST=${MANAGER_HOST}" >> .env
-    - scp -r .env  olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
+    - echo "MANAGER_HOST=${MANAGER_HOST}" >> /builds/olip78/ynyt.tmp/.env
+    - scp -r /builds/olip78/ynyt.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
+    - ssh olipandrei@${MANAGER_HOST} "cat olipandrei@${MANAGER_HOST}:/home/olipandrei/.env"
 
   script:
     - echo "Deploying app_dashboard..."
@@ -103,9 +104,9 @@ predictions-update:
 
     - scp -r prediction_stack.yml olipandrei@${MANAGER_HOST}:/home/olipandrei/prediction_stack.yml
     - cat $FILE_VAR >> /builds/olip78/ynyt.tmp/.env
+    - echo "MANAGER_HOST=${MANAGER_HOST}" >> /builds/olip78/ynyt.tmp/.env
     - scp -r /builds/olip78/ynyt.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
-    
-    - ssh olipandrei@${MANAGER_HOST} "export MANAGER_HOST=${MANAGER_HOST}"
+    - ssh olipandrei@${MANAGER_HOST} "cat olipandrei@${MANAGER_HOST}:/home/olipandrei/.env"
 
   script:
     - echo "Deploying predict ..."
