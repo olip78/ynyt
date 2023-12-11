@@ -83,7 +83,7 @@ app_dashboard:
 
   script:
     - echo "Deploying app_dashboard..."
-    - ssh olipandrei@${MANAGER_HOST} "docker stack deploy -c ./app_stack.yml app_ynyt"
+    - ssh olipandrei@${MANAGER_HOST} "docker stack deploy --env-file /home/olipandrei/.env -c ./app_stack.yml app_ynyt"
     - ssh olipandrei@${MANAGER_HOST} "docker service update --replicas 4 app_ynyt"
 
     - echo "Prediction app_dashboard successfully deployed!"
@@ -104,13 +104,13 @@ predictions-update:
 
     - scp -r prediction_stack.yml olipandrei@${MANAGER_HOST}:/home/olipandrei/prediction_stack.yml
     - cat $FILE_VAR >> /builds/olip78/ynyt.tmp/.env
+    - scp -r /builds/olip78/ynyt.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/prediction/.env
     - echo "MANAGER_HOST=${MANAGER_HOST}" >> /builds/olip78/ynyt.tmp/.env
-    - scp -r /builds/olip78/ynyt.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
     - ssh olipandrei@${MANAGER_HOST} "cat olipandrei@${MANAGER_HOST}:/home/olipandrei/.env"
 
   script:
     - echo "Deploying predict ..."
-    - ssh olipandrei@${MANAGER_HOST} "docker run --name prediction --env-file .env --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
+    - ssh olipandrei@${MANAGER_HOST} "docker run --name prediction --env-file /home/olipandrei/prediction/.env --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
     - ssh olipandrei@${MANAGER_HOST} "docker stack deploy -c ./prediction_stack.yml ynyt_prediction_cron"
     - ssh olipandrei@${MANAGER_HOST} "docker service update --replicas 1 predictions_ynyt"
     - echo "Prediction app successfully deployed!"
