@@ -107,7 +107,8 @@ first_predictions:
     - scp -r /builds/olip78/ynyt.gi.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
 
   script:
-    - ssh olipandrei@${MANAGER_HOST} "docker run --name prediction --env-file /home/olipandrei/.env --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
+    #- ssh olipandrei@${MANAGER_HOST} "docker run --name prediction --env-file /home/olipandrei/.env --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
+    - ssh olipandrei@${MANAGER_HOST} "docker run --name prediction --env-file /home/olipandrei/.env -d ${MANAGER_HOST}:4000/ynyt_prediction"
     - echo "Prediction app_dashboard successfully deployed!"
   
   after_script:
