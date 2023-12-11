@@ -42,24 +42,24 @@ build-job:
 
 
     - echo "dashboard-img start"
-   # - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_app -f ./dashboard/Dockerfile ."
-   # - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_app:latest ${MANAGER_HOST}:4000/ynyt_app:latest"
-   # - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_app:latest"
+    - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_app -f ./dashboard/Dockerfile ."
+    - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_app:latest ${MANAGER_HOST}:4000/ynyt_app:latest"
+    - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_app:latest"
 
     - echo "updater-img start"
-  #  - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_updater -f ./updater/Dockerfile ."
-  #  - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_updater:latest ${MANAGER_HOST}:4000/ynyt_updater:latest"
-  #  - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_updater:latest"
+    - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_updater -f ./updater/Dockerfile ."
+    - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_updater:latest ${MANAGER_HOST}:4000/ynyt_updater:latest"
+    - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_updater:latest"
 
     - echo "predict-img start"
-  #  - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_prediction -f ./prediction/Dockerfile ."
-  #  - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_prediction:latest ${MANAGER_HOST}:4000/ynyt_prediction:latest"
-  #  - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_prediction:latest"
+    - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_prediction -f ./prediction/Dockerfile ."
+    - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_prediction:latest ${MANAGER_HOST}:4000/ynyt_prediction:latest"
+    - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_prediction:latest"
 
     - echo "predict-cron-img start"
-  #  - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_prediction_cron -f ./prediction/Dockerfile.cron ."
-  #  - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_prediction_cron:latest ${MANAGER_HOST}:4000/ynyt_prediction_cron:latest"
-  #  - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_prediction_cron:latest"
+    - ssh olipandrei@${MANAGER_HOST} "docker build -t ynyt_prediction_cron -f ./prediction/Dockerfile.cron ."
+    - ssh olipandrei@${MANAGER_HOST} "docker tag ynyt_prediction_cron:latest ${MANAGER_HOST}:4000/ynyt_prediction_cron:latest"
+    - ssh olipandrei@${MANAGER_HOST} "docker push ${MANAGER_HOST}:4000/ynyt_prediction_cron:latest"
 
     - echo "build job complete!"
   after_script:
@@ -83,8 +83,9 @@ ynyt:
   script:
     - echo "Deploying app_dashboard..."
     - ssh olipandrei@${MANAGER_HOST} "MANAGER_HOST=${MANAGER_HOST} docker stack deploy -c ./app_stack.yml app_ynyt"
-    #- ssh olipandrei@${MANAGER_HOST} "docker service update --replicas 4 app_ynyt_dashboard"
+    #- ssh olipandrei@${MANAGER_HOST} "docker service update --with-registry-auth --replicas 4 app_ynyt_dashboard"
     #- ssh olipandrei@${MANAGER_HOST} "docker service update --replicas 2 app_ynyt_updater"
+
 
   after_script:
     - ssh olipandrei@${MANAGER_HOST} "rm /home/olipandrei/app_stack.yml"
