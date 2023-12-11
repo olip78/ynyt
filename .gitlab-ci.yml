@@ -78,7 +78,7 @@ app_dashboard:
     
     - scp -r app_stack.yml  olipandrei@${MANAGER_HOST}:/home/olipandrei/app_stack.yml
     - echo "MANAGER_HOST=${MANAGER_HOST}" >> /builds/olip78/ynyt.gi.tmp/.env
-    - scp -r /builds/olip78/ynyt.gi.tmp/.env.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
+    - scp -r /builds/olip78/ynyt.gi.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
     - ssh olipandrei@${MANAGER_HOST} "cat olipandrei@${MANAGER_HOST}:/home/olipandrei/.env"
 
   script:
