@@ -3,7 +3,7 @@ version: "3.9"
 services:
   updater:
     image: "${MANAGER_HOST}:4000/ynyt_updater:latest"
-    container_name: updater
+    container_name: updater_app
     logging:
       driver: journald
       options:
@@ -15,7 +15,7 @@ services:
 
   dashboard:
     image: "${MANAGER_HOST}:4000/ynyt_app:latest"
-    container_name: dashboard
+    container_name: dashboard_app
     logging:
       driver: journald
       options:
