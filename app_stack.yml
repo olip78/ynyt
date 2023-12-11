@@ -3,7 +3,6 @@ version: "3.9"
 services:
   updater:
     image: "${MANAGER_HOST}:4000/ynyt_updater:latest"
-    container_name: updater_app
     logging:
       driver: journald
       options:
@@ -15,7 +14,6 @@ services:
 
   dashboard:
     image: "${MANAGER_HOST}:4000/ynyt_app:latest"
-    container_name: dashboard_app
     logging:
       driver: journald
       options:
@@ -24,17 +22,12 @@ services:
       - app_data:/usr/src/results
     ports:
       - "8080:8080"
-    depends_on:
-      - updater
 
 services:
   prediction_cron:
     image: ${MANAGER_HOST}:4000/ynyt_prediction_cron:latest
-    container_name: prediction_cron
     env_file:
       - ./.env
-    depends_on:
-      - updater
 
 volumes:
   app_data:
