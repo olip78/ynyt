@@ -81,7 +81,7 @@ ynyt:
     - scp -r /builds/olip78/ynyt.gi.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
 
 #    - ssh olipandrei@${MANAGER_HOST} "docker service rm updater"
-    - ssh olipandrei@${MANAGER_HOST} "docker service dashboard rm"
+    - ssh olipandrei@${MANAGER_HOST} "docker service rm dashboard"
 
   script:
     - echo "Deploying app_dashboard..."
