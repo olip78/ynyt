@@ -80,8 +80,8 @@ ynyt:
     - cat $FILE_VAR >> /builds/olip78/ynyt.gi.tmp/.env
     - scp -r /builds/olip78/ynyt.gi.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
 
-    - ssh olipandrei@${MANAGER_HOST} "docker service rm updater"
-    - ssh olipandrei@${MANAGER_HOST} "docker dashboard rm updater"
+#    - ssh olipandrei@${MANAGER_HOST} "docker service rm updater"
+    - ssh olipandrei@${MANAGER_HOST} "docker service dashboard rm"
 
   script:
     - echo "Deploying app_dashboard..."
