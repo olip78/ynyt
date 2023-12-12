@@ -12,6 +12,8 @@ services:
       - app_data:/usr/src/results
     ports:
       - "8081:8081"
+    networks:
+        - ynyt_network
 
   dashboard:
     image: "${MANAGER_HOST}:4000/ynyt_app:latest"
@@ -24,6 +26,8 @@ services:
       - app_data:/usr/src/results
     ports:
       - "8080:8080"
+    networks:
+      - ynyt_network
 
   prediction_cron:
     image: ${MANAGER_HOST}:4000/ynyt_prediction_cron:latest
@@ -35,3 +39,6 @@ services:
 
 volumes:
   app_data:
+
+networks:
+  ynyt_network:
