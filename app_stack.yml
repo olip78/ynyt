@@ -13,7 +13,7 @@ services:
     ports:
       - "8081:8081"
     networks:
-        - ynyt_network
+        - backend
 
   dashboard:
     image: "${MANAGER_HOST}:4000/ynyt_app:latest"
@@ -27,7 +27,8 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - ynyt_network
+      - backend
+      - frontend
 
   prediction_cron:
     image: ${MANAGER_HOST}:4000/ynyt_prediction_cron:latest
@@ -41,4 +42,7 @@ volumes:
   app_data:
 
 networks:
-  ynyt_network:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
