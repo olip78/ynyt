@@ -114,3 +114,4 @@ first_predictions:
   
   after_script:
     - ssh -T olipandrei@${MANAGER_HOST} "rm /home/olipandrei/prediction/.env"
+
