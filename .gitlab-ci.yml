@@ -86,8 +86,8 @@ ynyt:
     - ssh olipandrei@${MANAGER_HOST} "docker network create --driver overlay frontend"
     - ssh olipandrei@${MANAGER_HOST} "docker network create --driver overlay backend"
     - ssh olipandrei@${MANAGER_HOST} "docker volume create app_data"
-    - ssh olipandrei@${MANAGER_HOST} "docker service create -name updater -network backend -replicas 2 -mount type=volume,src=app_data,dst=/usr/src/results ${MANAGER_HOST}:4000/ynyt_updater:latest
-    - ssh olipandrei@${MANAGER_HOST} "docker service create -name dashboard -network frontend -replicas 4 -mount type=volume,src=app_data,dst=/usr/src/results ${MANAGER_HOST}:4000/ynyt_app:latest
+    - ssh olipandrei@${MANAGER_HOST} "docker service create -name updater -network backend -replicas 2 -mount type=volume,src=app_data,dst=/usr/src/results ${MANAGER_HOST}:4000/ynyt_updater:latest"
+    - ssh olipandrei@${MANAGER_HOST} "docker service create -name dashboard -network frontend -replicas 4 -mount type=volume,src=app_data,dst=/usr/src/results ${MANAGER_HOST}:4000/ynyt_app:latest"
     - ssh olipandrei@${MANAGER_HOST} "MANAGER_HOST=${MANAGER_HOST} docker stack deploy -c ./prediction_stack.yml prediction"
 
   after_script:
