@@ -108,8 +108,6 @@ ynyt_update:
     - cat $FILE_VAR >> /builds/olip78/ynyt.gi.tmp/.env
     - scp -r /builds/olip78/ynyt.gi.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
 
-    - docker stack rm prediction
-
   script:
     - echo "Updating app_dashboard..."
 
