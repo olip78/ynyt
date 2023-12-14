@@ -80,8 +80,6 @@ ynyt:
     - cat $FILE_VAR >> /builds/olip78/ynyt.gi.tmp/.env
     - scp -r /builds/olip78/ynyt.gi.tmp/.env olipandrei@${MANAGER_HOST}:/home/olipandrei/.env
 
-#    - ssh olipandrei@${MANAGER_HOST} "docker service rm updater"
-#    - ssh olipandrei@${MANAGER_HOST} "docker service rm dashboard"
 #    - ssh olipandrei@${MANAGER_HOST} "docker network rm app_frontend"
 #    - ssh olipandrei@${MANAGER_HOST} "docker network rm app_backend"
 
@@ -91,8 +89,8 @@ ynyt:
 #    - ssh olipandrei@${MANAGER_HOST} "docker network create --driver overlay app_frontend"
 #    - ssh olipandrei@${MANAGER_HOST} "docker network create --driver overlay app_backend"
     - ssh olipandrei@${MANAGER_HOST} "docker volume create app_data"
-    - ssh olipandrei@${MANAGER_HOST} "docker service create --name updater --network app_backend -p 8081:8081 --replicas 2 --mount type=volume,src=app_data,dst=/usr/src/results ${MANAGER_HOST}:4000/ynyt_updater:latest"
-    - ssh olipandrei@${MANAGER_HOST} "MANAGER_HOST=${MANAGER_HOST} docker stack deploy -c ./prediction_stack.yml prediction"
+#    - ssh olipandrei@${MANAGER_HOST} "docker service create --name updater --network app_backend -p 8081:8081 --replicas 2 --mount type=volume,src=app_data,dst=/usr/src/results {MANAGER_HOST}:4000/ynyt_updater:latest"
+#    - ssh olipandrei@${MANAGER_HOST} "MANAGER_HOST=${MANAGER_HOST} docker stack deploy -c ./prediction_stack.yml prediction"
     - ssh olipandrei@${MANAGER_HOST} "docker run --name prediction --env-file /home/olipandrei/.env --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
     - ssh olipandrei@${MANAGER_HOST} "docker service create --name dashboard --network app_frontend -p 8080:8080 --replicas 2 --mount type=volume,src=app_data,dst=/usr/src/results ${MANAGER_HOST}:4000/ynyt_app:latest"
 
