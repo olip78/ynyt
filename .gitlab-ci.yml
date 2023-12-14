@@ -111,7 +111,7 @@ ynyt_update:
   script:
     - echo "Updating app_dashboard..."
 
-    - ssh olipandrei@${MANAGER_HOST} "docker service update --image {MANAGER_HOST}:4000/ynyt_updater:latest updater"
+    - ssh olipandrei@${MANAGER_HOST} "docker service update --image ${MANAGER_HOST}:4000/ynyt_updater:latest updater"
     - ssh olipandrei@${MANAGER_HOST} "MANAGER_HOST=${MANAGER_HOST} docker stack deploy -c ./prediction_stack.yml prediction"
     - ssh olipandrei@${MANAGER_HOST} "docker run --name prediction --env-file /home/olipandrei/.env --rm -d ${MANAGER_HOST}:4000/ynyt_prediction"
     - ssh olipandrei@${MANAGER_HOST} "docker service update --image ${MANAGER_HOST}:4000/ynyt_app:latest dashboard"
