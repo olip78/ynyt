@@ -218,7 +218,7 @@ def update_map_hourly(h, n_intervals):
         title = 'Forecast for {}'.format(current_hour_text(h, config))
         fig.update_layout(title=title, mapbox={"zoom": 10.4}, margin={"r":30,"t":80,"l":25,"b":30})
         h0 = h
-        #forced = False
+        forced = False
         t0 = datetime.now().hour
         return fig
     else:

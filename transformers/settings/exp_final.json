@@ -1,0 +1,1 @@
+{"regression_head": {"heads": 1, "dropout_head": 0.1, "layers": [6], "add_features": 2, "flatt_factor": 2}, "data_setting": {"features": true, "D": true, "hours": true, "weekday": true}, "params": {"embed_size": 16, "heads": 4, "num_layers": 1, "dropout": 0.1, "forward_expansion": 1, "lr": 5e-06, "batch_size": 128, "seq_len": 4, "epoches": 600, "device": "cuda"}}
