@@ -23,7 +23,7 @@ As a game problem, I took a multivariate zonal demand forecasting problem for ye
 ### Problem statement <a name="problem-statement-"></a>
 Develop a forecasting model that predicts demand on yellow taxi in each specific geographic zone in New York City over a 6-hour horizon. 
 
-<img src="./transformers/imgs/ny.jpg"  width="70%" height="70%">
+<img src="./transformers/imgs/ny.jpg"  width="75%" height="75%">
 
 Data: https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page, out of more than 250 zones, 55 were selected that have an average of more than 5 trips per hour (with median value about 60 trips per hour).
 
@@ -48,11 +48,11 @@ The idea to apply transformers to simultaneous multiple time-series forecasting 
 
 The Spatio-Temporal Transformer architecture proposed in the paper is shown in the following diagram:
 
-<img src="./transformers/imgs/seerte.jpeg"  width="40%" height="40%">
+<img src="./transformers/imgs/seerte.jpeg"  width="45%" height="45%">
 
 The main idea of the approach lays in using different embedding layers, which allows a finer detection of spatio-temporal dependencies:
 
-<img src="./transformers/imgs/heads.jpeg"  width="45%" height="45%">
+<img src="./transformers/imgs/heads.jpeg"  width="55%" height="55%">
 
 The original paper was aimed at predicting the next value of a single time series, so I had to modify the architecture a bit for my purposes: 
 1. replace the embedding layers transformation $R \to R^d$ with $R^k \to R^d$ one ($d$ - embedding dim), that allowed me to take into account additional information about trips, contained in the data (avg. cost, distance, day of the week and so on),
@@ -60,7 +60,7 @@ The original paper was aimed at predicting the next value of a single time serie
 
 After spending a few days experimenting with different architecture and hyper-parameters, I was able to slightly outperform the base-line model results for prediction hours greater than 1:
 
-<img src="./transformers/imgs/ridge_transf_comp.png"  width="75%" height="75%">
+<img src="./transformers/imgs/ridge_transf_comp.png"  width="80%" height="80%">
 
 **Some conclusions:** 
 1. The approach works! Incorporation of cross-relationships among zones could outperform Fourier harmonics, that were crucial for the baseline solution (and that work good in case of multi-periodical time series).
