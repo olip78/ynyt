@@ -11,7 +11,7 @@ In this personal project, I had set two goals for myself:
 1. Experiment with the application of transformers to address the complexities of multiple time series forecasting.
 2. Hone my skills in developing end-to-end machine learning projects, emphasizing both development aspects and the implementation of MLOps practices.
 
-As a game problem, I took a multivariate zonal demand forecasting problem for yellow taxis in New York City. I was familiar with the dataset as I had developed a prediction algorithm in May 2020 (it was my first ML learning project) that I could use now also as a base-line solution.
+As a game problem, I took a multivariate zonal demand forecasting problem for yellow taxis in New York City. I was familiar with the dataset as I had developed a prediction algorithm in May 2020 (it was my first ML project) that I could use now also as a baseline solution.
 
 
 ### Table of Contents <!-- omit in toc -->
@@ -25,16 +25,17 @@ Develop a forecasting model that predicts demand on yellow taxi in each specific
 
 <img src="./transformers/imgs/ny.jpg"  width="75%" height="75%">
 
-Data: https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page, out of more than 250 zones, 55 were selected that have an average of more than 5 trips per hour (with median value about 60 trips per hour).
+Data: [TLC Trip Record Data](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page). Out of more than 250 zones, 55 were selected that have an average value of more than 5 trips per hour.
 
 Disclaimer: Since the goal was to experiment with different types of ML / DL approaches and I was interested in relative quality, I did not attempt to use any external information (e.g., weather forecasts) and limited myself to data from the original dataset.
 
 ### Baseline Solution <a name="baseline-solution-"></a>
 Experimenting with different models (ARIMA models for time series clusters and different regressors for the this approach), I settled on a liner ridge regression (6 models, one for each forecasting hour) accompanied by complex feature engineering. The solution was based on two key ideas:
-1. use of Fourier harmonics for modelling large fluctuation periods
+1. use of Fourier harmonics for modelling larger fluctuation periods
 2. using the Cartesian product for the base features and zones id / hours
    
-As base features I took autoregressive number of trips (-1, -2, ..., -24, -48, ... hours), as well as average trips information in the last hour (distance, cost, drive time, etc.). On the test period, the model performed moderately well. For normalized values depending on 
+As base features I took autoregressive number of trips (-1, -2, ..., -24, -48, ... hours), as well as average trips information in the last hour (distance, cost, drive time, etc.).
+On the test period, the model performed moderately well. For normalized values depending on 
 prediction hour horizon, $MAE$ and $R^2$ metrics varied:
 - $MAE$ from 0.04457 till 0.05129
 - $R^2$ from 0.90793 till 0.87887 
@@ -64,7 +65,7 @@ After spending a few days experimenting with different architecture and hyper-pa
 
 **Some conclusions:** 
 1. The approach works! Incorporation of cross-relationships among zones could outperform Fourier harmonics, that were crucial for the baseline solution (and that work good in case of multi-periodical time series).
-2. There was clearly insufficient data. Using data more than a year and a half old decreased performance (obvious data shift). The lightest architecture (4 hors sequence, 16 embedding dim, 1 encoding block) showed the best performance.
+2. There was clearly insufficient data. Using data more than a year and a half old decreased performance (obvious data shift). The lightest architecture (4 hours sequence, 16 embedding dim, 1 encoding block) showed the best performance.
 3. Difficult to train and tune. High dependence on architecture parameters.
 
 ### App Schema and Deployment <a name="app-schema-and-deployment-"></a>
