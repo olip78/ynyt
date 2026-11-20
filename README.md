@@ -17,7 +17,7 @@ The project uses [TLC Trip Record Data](https://www.nyc.gov/site/tlc/about/tlc-t
 
 The experiments intentionally use only the original trip data. External predictors such as weather forecasts were excluded so that the comparison focused on model architecture.
 
-## Baseline
+## Baseline (2020)
 
 Several classical approaches were tested, including ARIMA models for clusters of related series and regression models. The final baseline uses six ridge-regression models, one for each forecast horizon, together with feature engineering based on:
 
@@ -30,7 +30,7 @@ Depending on the forecast horizon, the baseline achieved:
 - normalised MAE between 0.04457 and 0.05129;
 - $R^2$ between 0.90793 and 0.87887.
 
-## Spatio-temporal transformer
+## Spatio-temporal transformer (2023)
 
 The model adapts the architecture proposed in [STTRE: A Spatio-Temporal Transformer with Relative Embeddings for Multivariate Time-Series Forecasting](https://www.sciencedirect.com/science/article/pii/S0893608023005361).
 
@@ -66,4 +66,4 @@ The implementation included:
 - a local Docker registry;
 - GitLab CI/CD.
 
-A former colleague contributed the front-end design of the Plotly dashboard. The original demonstration deployment is no longer maintained.
+A former colleague contributed the front-end design of the Plotly dashboard. The original demonstration deployment is currently offline.
